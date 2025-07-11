@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title>SustainHub - AI Driven Tree Detection and Count</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            max-height: 100vh;
+            max-width: 100vw;
+            font-family: "Montserrat", serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        button {
+            border: none;
+            background-color: transparent;
+            font-family: "Montserrat", serif;
+        }
+
+        .heading {
+            font-size: 5vmin;
+            text-align: center;
+        }
+
+        /* header */
+
+        #header {
+            position: fixed;
+            width: 100%;
+            padding: 0 5vmin;
+            height: 10vmin;
+            background-color: black;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 3.5vmin;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5vmin;
+        }
+
+        .nav-links a {
+            transition: 0.4s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.7;
+        }
+
+        /* results */
+
+        #results {
+            padding-top: 10vmin;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5vmin;
+            height: 100vh;
+        }
+
+        .result-img {
+            display: flex;
+            align-items: center;
+            gap: 5vmin;
+        }
+
+        .result-img img {
+            height: 60vmin;
+        }
+
+        #results a {
+            color: black;
+            background-color: #d1e7ca;
+            padding: 1vmin 2vmin;
+            border-radius: 20px;
+            transition: 0.4s;
+        }
+
+        #results a:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        /* footer */
+
+        #footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 3vmin;
+            text-align: center;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2vmin;
+            margin-top: 1vmin;
+        }
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <header id="header">
+        <div class="logo"><a href="{{ url_for('home') }}">Sustain Hub</a></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('home') }}#features">Features</a></li>
+                <li><a href="{{ url_for('home') }}#about">About Us</a></li>
+                <li><a href="{{ url_for('home') }}#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="results">
+        <h1 class="heading">Tree Detection Result</h1>
+        <div class="result-img">
+            {% if image_path %}
+            <img src="{{ url_for('static', filename=image_path) }}" alt="Detected Trees">
+            {% else %}
+            <p>No result image available.</p>
+            {% endif %}
+            <h2>Number of trees detected: {{ tree_count }}</h2>
+        </div>
+        <a href="{{ url_for('home') }}">Go Back to Upload</a>
+    </section>
+
+    <footer id="footer">
+        <p>&copy; 2024 SustainHub - Tree Detection and Count. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="..">Privacy Policy</a></li>
+            <li><a href="..">Terms of Service</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        window.onload = function () {
+            fetch('/cleanup', { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Cleanup completed successfully.');
+                    } else {
+                        console.error('Cleanup failed.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        };
+    </script>
+</body>
+
+</html>
